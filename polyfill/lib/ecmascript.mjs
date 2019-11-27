@@ -877,15 +877,9 @@ export const ES = ObjectAssign(ObjectAssign({}, ES2019), {
     if (!Number.isFinite(num) || Math.abs(num) !== num) throw new RangeError(`invalid positive integer: ${num}`);
     return num;
   },
-  SystemUTCEpochNanoSeconds: (() => {
-    let ns = Date.now() % 1e6;
-    return () => {
-      const ms = Date.now();
-      const result = bigInt(ms).multiply(1e6).plus(ns);
-      ns = ms % 1e6;
-      return result;
-    };
-  })(),
+  SystemUTCEpochNanoSeconds: () => {
+    return bigInt(Date.now()).multiply(1e6);
+  },
   SystemTimeZone: () => {
     const fmt = new IntlDateTimeFormat('en-us');
     return ES.ToTimeZone(fmt.resolvedOptions().timeZone);

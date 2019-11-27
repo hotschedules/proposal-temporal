@@ -4,4 +4,111 @@
 <emu-clause id="sec-temporal-object">
   <h1>The Temporal Object</h1>
   <p><mark>TODO: Specify.</mark></p>
+  <p>
+    The Temporal object is the %Temporal% intrinsic object and the initial value of the Temporal property of the global object.
+    The Temporal object is a single ordinary object.
+  </p>
+  <p>
+    The value of the [[Prototype]] internal slot of the Temporal object is the intrinsic object %ObjectPrototype%.
+  </p>
+  <p>
+    The Temporal object is not a function object.
+    It does not have a [[Construct]] internal method; it is not possible to use the Temporal object as a constructor with the new operator.
+    The Temporal object does not have a [[Call]] internal method; it is not possible to invoke the Temporal object as a function.
+  </p>
+  <p>
+    The Temporal object has an internal slot, [[Now]], which is an Object.
+    Initially, it is *undefined*.
+  </p>
+
+  <emu-clause id="sec-temporal-properties">
+    <h1>Temporal properties</h1>
+    <emu-clause id="sec-get-temporal.now">
+      <h1>get Temporal.now</h1>
+      <p>
+        `Temporal.now` is an accessor property whose set accessor function is undefined.
+        Its get accessor function performs the following steps:
+      </p>
+      <emu-alg>
+        1. Let _temporal_ be the *this* value.
+        1. Perform ? RequireInternalSlot(_temporal_, [[Now]]).
+        1. If _temporal_.[[Now]] is *undefined*, then
+          1. Let _object_ be ? ObjectCreate(%Object.prototype%).
+          1. For each row of <emu-xref href="#table-temporal-properties"></emu-xref>, except the header row, in table order, do
+            1. Let _name_ be the Property Name value of the current row.
+            1. Let _method_ be the Function value of the current row.
+            1. Let _descriptor_ be the PropertyDescriptor { [[Value]]: _method_, [[Writable]]: true, [[Enumerable]]: enumerable, [[Configurable]]: true }. <!-- XXX correct? -->
+            1. Perform ? DefinePropertyOrThrow(_object_, _name_, _descriptor_). 
+          1. Set _temporal_.[[Now]] to _object_.
+        1. Return _temporal_.[[Now]].
+      </emu-alg>
+
+      <emu-table id="table-temporal-properties">
+        <emu-caption>Properties of the `Temporal.now` object</emu-caption>
+        <table class="real-table">
+          <thead>
+            <tr>
+              <th>Property Name</th>
+              <th>Function</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>*"absolute"*</td>
+              <td>%Temporal.now.absolute%</td>
+            </tr>
+
+            <tr>
+              <td>*"dateTime"*</td>
+              <td>%Temporal.now.dateTime%</td>
+            </tr>
+
+            <tr>
+              <td>*"date"*</td>
+              <td>%Temporal.now.date%</td>
+            </tr>
+
+            <tr>
+              <td>*"time"*</td>
+              <td>%Temporal.now.time%</td>
+            </tr>
+
+            <tr>
+              <td>*"timeZone"*</td>
+              <td>%Temporal.now.timeZone%</td>
+            </tr>
+          </tbody>
+        </table>
+      </emu-table>
+    </emu-clause>
+
+    <emu-clause id="sec-temporal.now.absolute">
+      <h1>Temporal.now.absolute ( )</h1>
+      <p>
+        The following steps are taken:
+      </p>
+      <emu-alg>
+        1. Return ? SystemAbsolute().
+        1. Let _ns_ be the UTC date and time of the occurrence of the call to now, in nanoseconds since the epoch.
+        1. Return ? CreateAbsolute(_ns_).
+      </emu-alg>
+      <p>This function is the <dfn>%Temporal.now.absolute%</dfn> intrinsic object.</p>
+    </emu-clause>
+
+    <emu-clause id="sec-temporal.now.datetime">
+      <h1>Temporal.now.dateTime ( [ _timeZone_ ] )</h1>
+      <p>
+        The `dateTime` method takes one argument _timeZone_.
+        The following steps are taken:
+      </p>
+      <emu-alg>
+        1. If _timeZone_ is *undefined*, then
+            1. Set _timeZone_ to SystemTimeZone().
+        1. Let _timeZone_ be ? ToTimeZone(_timeZone_).
+        1. Let _absolute_ be ? SystemAbsolute().
+        1. Return ? GetDateTimeFor(_timeZone_, _absolute_).
+      </emu-alg>
+      <p>This function is the <dfn>%Temporal.now.dateTime%</dfn> intrinsic object.</p>
+    </emu-clause>
+  </emu-clause>
 </emu-clause>

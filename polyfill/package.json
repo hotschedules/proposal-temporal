@@ -1,5 +1,5 @@
 {
-  "name": "tc39-temporal",
+  "name": "@hotschedules/tc39-temporal",
   "version": "1.0.0",
   "description": "TC39 Proposal: Temporal",
   "main": "index.js",

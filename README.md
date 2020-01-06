@@ -1,3 +1,6 @@
+# HotSchedules
+This fork was created so that we can publish NPM packages of Temporal to our JFrog/Artifactory repository. Once the Temporal polyfill becomes officially available as an NPM package, part of corejs, etc, then all code should use the official package.
+
 # Temporal
 
 Provides standard objects and functions for working with dates and times.
